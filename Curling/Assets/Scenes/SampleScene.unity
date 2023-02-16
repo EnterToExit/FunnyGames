@@ -809,3 +809,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cameraPivot: {fileID: 954562389}
   _camera: {fileID: 963194228}
+  _stone: {fileID: 183124267}
+  _sensetivity: 0.5
