@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Stone : MonoBehaviour
 {
-    private float _passedTime;
     private CameraController _cameraController;
+    private float _passedTime;
     private bool _dead;
 
     private void Awake()
@@ -20,6 +20,13 @@ public class Stone : MonoBehaviour
         if (speed == 0f && !_dead)
         {
             _passedTime += Time.deltaTime;
+        }
+        
+        if (_passedTime > 10f && speed > 0f)
+        {
+            _dead = true;
+            _passedTime = 0f;
+            _cameraController.ResetCameraTarget();
         }
 
         if (!(_passedTime > 1f)) return;

@@ -10,6 +10,7 @@ public class DirectionController : MonoBehaviour
     private GameSettings _gameSettings;
     private float _sens;
     public Vector3 direction;
+    public float _dick;
 
     private void Start()
     {
@@ -21,8 +22,11 @@ public class DirectionController : MonoBehaviour
     {
         _mousePos = Input.mousePosition;
         var mousePosDelta = _mousePosNew - _mousePos;
-        _compas.transform.eulerAngles += new Vector3(0f, mousePosDelta.x * -1 * _sens, 0f);
+        var eulerAngles = _compas.transform.eulerAngles;
+        eulerAngles += new Vector3(0f, mousePosDelta.x * -1 * _sens, 0f);
+        _compas.transform.eulerAngles = eulerAngles;
         direction = _back.position - _forward.position;
+        _dick = eulerAngles.y;
         _mousePosNew = Input.mousePosition;
     }
 }
