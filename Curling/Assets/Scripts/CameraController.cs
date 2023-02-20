@@ -4,17 +4,19 @@ public class CameraController : MonoBehaviour
 {
     [SerializeField] private Transform _cameraPivot;
     [SerializeField] private Transform _camera;
-    [SerializeField] private Transform _stone;
+    [SerializeField] private GameObject _stoneStartPos;
     private float _sensitivity;
     private GameSettings _gameSettings;
     private Vector3 _mousePos;
     private Vector3 _mousePosNew;
+    private GameObject _cameraTarget;
 
     private void Start()
     {
         _cameraPivot.eulerAngles = new Vector3(30f, 0f, 0f);
         _gameSettings = FindObjectOfType<GameSettings>();
         _sensitivity = _gameSettings.sensitivity;
+        _cameraTarget = _stoneStartPos;
     }
 
     private void Update()
@@ -61,6 +63,16 @@ public class CameraController : MonoBehaviour
 
     private void CameraPositionReset()
     {
-        transform.position = _stone.position + Vector3.up * 1f;
+        _cameraPivot.position = _cameraTarget.gameObject.transform.position + Vector3.up;
+    }
+
+    public void SetCameraTarget(GameObject target)
+    {
+        _cameraTarget = target;
+    }
+
+    public void ResetCameraTarget()
+    {
+        _cameraTarget = _stoneStartPos;
     }
 }

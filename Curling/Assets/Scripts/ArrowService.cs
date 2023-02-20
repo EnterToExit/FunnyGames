@@ -14,7 +14,7 @@ public class ArrowService : Service, IStart, IUpdate
     public void GameUpdate(float delta)
     {
         if (!Input.GetMouseButtonDown(0)) return;
-        ChangeActive();
+        // ChangeActive();
     }
 
     private void ChangeActive()
