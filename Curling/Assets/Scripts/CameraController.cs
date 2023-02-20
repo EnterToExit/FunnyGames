@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using JetBrains.Annotations;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -9,13 +5,16 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Transform _cameraPivot;
     [SerializeField] private Transform _camera;
     [SerializeField] private Transform _stone;
-    [SerializeField] private float _sensetivity;
+    private float _sensitivity;
+    private GameSettings _gameSettings;
     private Vector3 _mousePos;
     private Vector3 _mousePosNew;
 
     private void Start()
     {
         _cameraPivot.eulerAngles = new Vector3(30f, 0f, 0f);
+        _gameSettings = FindObjectOfType<GameSettings>();
+        _sensitivity = _gameSettings.sensitivity;
     }
 
     private void Update()
@@ -32,24 +31,32 @@ public class CameraController : MonoBehaviour
     private void CameraRotation()
     {
         var mousePosDelta = _mousePosNew - _mousePos;
-        // _cameraPivot.Rotate(new Vector3(mousePosDelta.y, mousePosDelta.x * -1f) * _sensetivity);
-        _cameraPivot.eulerAngles += new Vector3(mousePosDelta.y, mousePosDelta.x * -1f) * _sensetivity;
-        _cameraPivot.eulerAngles = new Vector3(_cameraPivot.eulerAngles.x, _cameraPivot.eulerAngles.y, 0f);
+        var eulerAngles = _cameraPivot.eulerAngles;
+        eulerAngles += new Vector3(mousePosDelta.y, mousePosDelta.x * -1f) * _sensitivity;
+        eulerAngles = new Vector3(eulerAngles.x, eulerAngles.y, 0f);
+        _cameraPivot.eulerAngles = eulerAngles;
         if (_cameraPivot.eulerAngles.x > 70f)
         {
-            _cameraPivot.eulerAngles = new Vector3(70f, _cameraPivot.eulerAngles.y, _cameraPivot.eulerAngles.z);
+            var angles = _cameraPivot.eulerAngles;
+            angles = new Vector3(70f, angles.y, angles.z);
+            _cameraPivot.eulerAngles = angles;
         }
-        if (_cameraPivot.eulerAngles.x < 10f)
+
+        if (!(_cameraPivot.eulerAngles.x < 10f)) return;
         {
-            _cameraPivot.eulerAngles = new Vector3(10f, _cameraPivot.eulerAngles.y, _cameraPivot.eulerAngles.z);
+            var angles = _cameraPivot.eulerAngles;
+            angles = new Vector3(10f, angles.y, angles.z);
+            _cameraPivot.eulerAngles = angles;
         }
     }
 
     private void CameraScroll()
     {
         var mouseScrollDelta = Input.mouseScrollDelta;
-        var direction = (_cameraPivot.position - _camera.position).normalized;
-        _camera.position += direction * mouseScrollDelta.y;
+        var position = _camera.position;
+        var direction = (_cameraPivot.position - position).normalized;
+        position += direction * mouseScrollDelta.y;
+        _camera.position = position;
     }
 
     private void CameraPositionReset()

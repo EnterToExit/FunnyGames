@@ -1,3 +1,5 @@
-public class Stone : Services
+using UnityEngine;
+
+public class Stone : MonoBehaviour
 {
 }
