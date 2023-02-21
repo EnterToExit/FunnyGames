@@ -17,7 +17,7 @@ public class ShootingService : Service, IStart, IUpdate
     public void GameStart()
     {
         _stoneStartPos = FindObjectOfType<StoneStartPos>();
-        _gameSettings = FindObjectOfType<GameSettings>();
+        _gameSettings = Services.Get<GameSettings>();
         _shootForce = _gameSettings.shootForce;
         _directionController = FindObjectOfType<DirectionController>();
         _cameraController = FindObjectOfType<CameraController>();
