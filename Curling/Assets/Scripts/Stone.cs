@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Stone : MonoBehaviour
 {
-    private CameraController _cameraController;
+    private CameraService _cameraService;
     private Ground _ground;
     private float _passedTime;
     private bool _dead;
@@ -12,7 +12,7 @@ public class Stone : MonoBehaviour
     private void Awake()
     {
         _ground = FindObjectOfType<Ground>();
-        _cameraController = FindObjectOfType<CameraController>();
+        _cameraService = FindObjectOfType<CameraService>();
         var shootingService = FindObjectOfType<ShootingService>();
         shootingService._stones.Add(gameObject);
         _rigidbody = gameObject.GetComponent<Rigidbody>();
@@ -29,14 +29,14 @@ public class Stone : MonoBehaviour
         if (!(_passedTime > 1f)) return;
         _dead = true;
         _passedTime = 0f;
-        _cameraController.ResetCameraTarget();
+        _cameraService.ResetCameraTarget();
     }
 
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject == _ground.gameObject)
         {
-            _cameraController.ResetCameraTarget();
+            _cameraService.ResetCameraTarget();
             Destroy(gameObject);
         }
     }

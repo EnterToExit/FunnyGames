@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DirectionController : MonoBehaviour
+public class DirectionService : MonoBehaviour
 {
     [SerializeField] private Transform _forward;
     [SerializeField] private Transform _back;
@@ -12,7 +12,7 @@ public class DirectionController : MonoBehaviour
     public Vector3 direction;
     public float _dick;
 
-    private void Start()
+    private void Awake()
     {
         _gameSettings = FindObjectOfType<GameSettings>();
         _sens = _gameSettings.sensitivity;

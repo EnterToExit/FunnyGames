@@ -7,8 +7,8 @@ public class ShootingService : Service, IStart, IUpdate
     [SerializeField] private GameObject _stone;
     private float _shootForce;
     private StoneStartPos _stoneStartPos;
-    private DirectionController _directionController;
-    private CameraController _cameraController;
+    private DirectionService _directionService;
+    private CameraService _cameraService;
     private GameSettings _gameSettings;
     private Vector3 _direction;
     public List<GameObject> _stones;
@@ -19,8 +19,8 @@ public class ShootingService : Service, IStart, IUpdate
         _stoneStartPos = FindObjectOfType<StoneStartPos>();
         _gameSettings = Services.Get<GameSettings>();
         _shootForce = _gameSettings.shootForce;
-        _directionController = FindObjectOfType<DirectionController>();
-        _cameraController = FindObjectOfType<CameraController>();
+        _directionService = FindObjectOfType<DirectionService>();
+        _cameraService = FindObjectOfType<CameraService>();
     }
 
     public void GameUpdate(float delta)
@@ -32,9 +32,9 @@ public class ShootingService : Service, IStart, IUpdate
     private void ShootStone()
     {
         _stoneNumber++;
-        var direction = _directionController.direction;
+        var direction = _directionService.direction;
         Instantiate(_stone, _stoneStartPos.transform).GetComponent<Rigidbody>()
             .AddForce(direction.normalized * _shootForce, ForceMode.Impulse);
-        _cameraController.SetCameraTarget(_stones[_stoneNumber]);
+        _cameraService.SetCameraTarget(_stones[_stoneNumber]);
     }
 }

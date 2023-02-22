@@ -3,13 +3,13 @@ using UnityEngine;
 public class ArrowService : Service, IStart, IUpdate
 {
     private Arrow _arrow;
-    private DirectionController _directionController;
+    private DirectionService _directionService;
     private StoneStartPos _startPos;
     private bool _arrowIsActive;
 
     public void GameStart()
     {
-        _directionController = FindObjectOfType<DirectionController>();
+        _directionService = FindObjectOfType<DirectionService>();
         _startPos = FindObjectOfType<StoneStartPos>();
         _arrow = FindObjectOfType<Arrow>();
         _arrowIsActive = true;
@@ -17,7 +17,7 @@ public class ArrowService : Service, IStart, IUpdate
 
     public void GameUpdate(float delta)
     {
-        var y = _directionController._dick;
+        var y = _directionService._dick;
         _arrow.transform.eulerAngles = new Vector3(0f, y);
         transform.position = _startPos.transform.position;
         if (!Input.GetMouseButtonDown(0)) return;

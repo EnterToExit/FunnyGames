@@ -32,16 +32,14 @@ public class Services : MonoBehaviour
     private static List<IUpdate> _updates = new();
     private static List<ILateUpdate> _lateUpdates = new();
     private static List<IStart> _starts = new();
-
     private static List<IInject> _injects = new();
-    // private FlowService _flowService;
 
     private void Awake()
     {
         Service[] services = FindObjectsOfType<Service>();
         foreach (Service service in services)
         {
-            // _services.Add(service.GetType(), service);
+            _services.Add(service.GetType(), service);
 
             if (service is IUpdate update)
             {
@@ -68,8 +66,6 @@ public class Services : MonoBehaviour
         {
             inject.Inject();
         }
-
-        // _flowService = Get<FlowService>();
     }
 
     private void Start()
@@ -82,11 +78,6 @@ public class Services : MonoBehaviour
 
     private void Update()
     {
-        // if (_flowService.CurrentFlowState == FlowService.FlowState.Paused)
-        // {
-        //     return;
-        // }
-
         foreach (IUpdate update in _updates)
         {
             update.GameUpdate(Time.deltaTime);
@@ -95,11 +86,6 @@ public class Services : MonoBehaviour
 
     private void LateUpdate()
     {
-        // if (_flowService.CurrentFlowState == FlowService.FlowState.Paused)
-        // {
-        //     return;
-        // }
-
         foreach (ILateUpdate update in _lateUpdates)
         {
             update.GameLateUpdate(Time.deltaTime);

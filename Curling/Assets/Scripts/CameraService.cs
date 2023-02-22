@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CameraController : MonoBehaviour
+public class CameraService : Service, IStart, IUpdate
 {
     [SerializeField] private Transform _cameraPivot;
     [SerializeField] private Transform _camera;
@@ -11,7 +11,7 @@ public class CameraController : MonoBehaviour
     private Vector3 _mousePosNew;
     private GameObject _cameraTarget;
 
-    private void Start()
+    public void GameStart()
     {
         _cameraPivot.eulerAngles = new Vector3(30f, 0f, 0f);
         _gameSettings = FindObjectOfType<GameSettings>();
@@ -19,20 +19,20 @@ public class CameraController : MonoBehaviour
         _cameraTarget = _stoneStartPos;
     }
 
-    private void Update()
+    public void GameUpdate(float delta)
     {
-        _mousePos = Input.mousePosition;
+        _mousePos = Input.mousePosition; // 
 
         CameraRotation();
         CameraScroll();
         CameraPositionReset();
 
-        _mousePosNew = Input.mousePosition;
+        _mousePosNew = Input.mousePosition; // 
     }
 
     private void CameraRotation()
     {
-        var mousePosDelta = _mousePosNew - _mousePos;
+        var mousePosDelta = _mousePosNew - _mousePos; //
         var eulerAngles = _cameraPivot.eulerAngles;
         eulerAngles += new Vector3(mousePosDelta.y, mousePosDelta.x * -1f) * _sensitivity;
         eulerAngles = new Vector3(eulerAngles.x, eulerAngles.y, 0f);
