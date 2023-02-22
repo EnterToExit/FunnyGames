@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DirectionService : MonoBehaviour
+public class DirectionService : Service, IStart, IUpdate
 {
     [SerializeField] private Transform _forward;
     [SerializeField] private Transform _back;
@@ -12,13 +12,13 @@ public class DirectionService : MonoBehaviour
     public Vector3 direction;
     public float _dick;
 
-    private void Awake()
+    public void GameStart()
     {
-        _gameSettings = FindObjectOfType<GameSettings>();
+        _gameSettings = Services.Get<GameSettings>();
         _sens = _gameSettings.sensitivity;
     }
 
-    private void Update()
+    public void GameUpdate(float delta)
     {
         _mousePos = Input.mousePosition;
         var mousePosDelta = _mousePosNew - _mousePos;

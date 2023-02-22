@@ -16,11 +16,11 @@ public class ShootingService : Service, IStart, IUpdate
 
     public void GameStart()
     {
-        _stoneStartPos = FindObjectOfType<StoneStartPos>();
         _gameSettings = Services.Get<GameSettings>();
+        _directionService = Services.Get<DirectionService>();
+        _cameraService = Services.Get<CameraService>();
+        _stoneStartPos = FindObjectOfType<StoneStartPos>();
         _shootForce = _gameSettings.shootForce;
-        _directionService = FindObjectOfType<DirectionService>();
-        _cameraService = FindObjectOfType<CameraService>();
     }
 
     public void GameUpdate(float delta)

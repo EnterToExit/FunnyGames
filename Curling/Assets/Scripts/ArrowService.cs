@@ -9,7 +9,7 @@ public class ArrowService : Service, IStart, IUpdate
 
     public void GameStart()
     {
-        _directionService = FindObjectOfType<DirectionService>();
+        _directionService = Services.Get<DirectionService>();
         _startPos = FindObjectOfType<StoneStartPos>();
         _arrow = FindObjectOfType<Arrow>();
         _arrowIsActive = true;

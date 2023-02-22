@@ -13,8 +13,8 @@ public class CameraService : Service, IStart, IUpdate
 
     public void GameStart()
     {
+        _gameSettings = Services.Get<GameSettings>();
         _cameraPivot.eulerAngles = new Vector3(30f, 0f, 0f);
-        _gameSettings = FindObjectOfType<GameSettings>();
         _sensitivity = _gameSettings.sensitivity;
         _cameraTarget = _stoneStartPos;
     }
