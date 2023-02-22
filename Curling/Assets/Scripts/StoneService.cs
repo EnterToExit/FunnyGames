@@ -8,7 +8,7 @@ public class StoneService : Service, IStart, IUpdate
 {
     private float _passedTime;
     private Stone _stone;
-    
+
     public void GameStart()
     {
         _stone = FindObjectOfType<Stone>();
@@ -17,6 +17,5 @@ public class StoneService : Service, IStart, IUpdate
     public void GameUpdate(float delta)
     {
         _passedTime += Time.deltaTime;
-        
     }
 }

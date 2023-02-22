@@ -16,7 +16,6 @@ public class Stone : MonoBehaviour
         var shootingService = FindObjectOfType<ShootingService>();
         shootingService._stones.Add(gameObject);
         _rigidbody = gameObject.GetComponent<Rigidbody>();
-        
     }
 
     private void Update()
@@ -26,15 +25,17 @@ public class Stone : MonoBehaviour
         {
             _passedTime += Time.deltaTime;
         }
-        
+
         if (!(_passedTime > 1f)) return;
         _dead = true;
         _passedTime = 0f;
         _cameraController.ResetCameraTarget();
     }
 
-    private void OnCollisionEnter(Collision other) {
-        if (other.gameObject == _ground.gameObject) {
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject == _ground.gameObject)
+        {
             _cameraController.ResetCameraTarget();
             Destroy(gameObject);
         }

@@ -22,7 +22,9 @@ public interface IInject
     void Inject();
 }
 
-public abstract class Service : MonoBehaviour { }
+public abstract class Service : MonoBehaviour
+{
+}
 
 public class Services : MonoBehaviour
 {
@@ -30,12 +32,13 @@ public class Services : MonoBehaviour
     private static List<IUpdate> _updates = new();
     private static List<ILateUpdate> _lateUpdates = new();
     private static List<IStart> _starts = new();
+
     private static List<IInject> _injects = new();
     // private FlowService _flowService;
 
     private void Awake()
     {
-        Service[] services =  FindObjectsOfType<Service>();
+        Service[] services = FindObjectsOfType<Service>();
         foreach (Service service in services)
         {
             // _services.Add(service.GetType(), service);
@@ -112,5 +115,5 @@ public class Services : MonoBehaviour
         _injects.Clear();
     }
 
-    public static T Get<T>() where T : Service => (T) _services[typeof(T)];
+    public static T Get<T>() where T : Service => (T)_services[typeof(T)];
 }
