@@ -5,7 +5,6 @@ public class CameraService : Service, IStart, IUpdate
     [SerializeField] private Transform _cameraPivot;
     [SerializeField] private Transform _camera;
     [SerializeField] private GameObject _stoneStartPos;
-    private float _sensitivity;
     private GameSettings _gameSettings;
     private Vector3 _mousePos;
     private Vector3 _mousePosNew;
@@ -17,7 +16,6 @@ public class CameraService : Service, IStart, IUpdate
         _gameSettings = Services.Get<GameSettings>();
         _mouseService = Services.Get<MouseService>();
         _cameraPivot.eulerAngles = new Vector3(30f, 0f, 0f);
-        _sensitivity = _gameSettings.Sensitivity;
         _cameraTarget = _stoneStartPos;
     }
 
@@ -31,7 +29,7 @@ public class CameraService : Service, IStart, IUpdate
     private void CameraRotation()
     {
         var eulerAngles = _cameraPivot.eulerAngles;
-        eulerAngles += new Vector3(_mouseService.Mouse.y, _mouseService.Mouse.x * -1f) * _sensitivity;
+        eulerAngles += new Vector3(_mouseService.Mouse.y, _mouseService.Mouse.x * -1f) * _gameSettings.Sensitivity;
         eulerAngles = new Vector3(eulerAngles.x, eulerAngles.y, 0f);
         _cameraPivot.eulerAngles = eulerAngles;
         if (_cameraPivot.eulerAngles.x > 70f)

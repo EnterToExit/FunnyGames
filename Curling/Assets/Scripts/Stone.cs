@@ -34,10 +34,8 @@ public class Stone : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject == _ground.gameObject)
-        {
-            _cameraService.ResetCameraTarget();
-            Destroy(gameObject);
-        }
+        if (other.gameObject != _ground.gameObject) return;
+        _cameraService.ResetCameraTarget();
+        Destroy(gameObject);
     }
 }
