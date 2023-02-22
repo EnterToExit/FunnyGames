@@ -7,6 +7,7 @@ public class Stone : MonoBehaviour
     private Ground _ground;
     private float _passedTime;
     private bool _dead;
+    private Rigidbody _rigidbody;
 
     private void Awake()
     {
@@ -14,11 +15,13 @@ public class Stone : MonoBehaviour
         _cameraController = FindObjectOfType<CameraController>();
         var shootingService = FindObjectOfType<ShootingService>();
         shootingService._stones.Add(gameObject);
+        _rigidbody = gameObject.GetComponent<Rigidbody>();
+        
     }
 
     private void Update()
     {
-        var speed = gameObject.GetComponent<Rigidbody>().velocity.magnitude;
+        var speed = _rigidbody.velocity.magnitude;
         if (speed == 0f && !_dead)
         {
             _passedTime += Time.deltaTime;
