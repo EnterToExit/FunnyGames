@@ -389,9 +389,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _forward: {fileID: 1551799780}
   _back: {fileID: 641216355}
-  _compas: {fileID: 475551809}
-  direction: {x: 0, y: 0, z: 0}
-  _dick: 0
+  _compass: {fileID: 475551809}
+  Direction: {x: 0, y: 0, z: 0}
+  Dick: 0
 --- !u!1 &451155729
 GameObject:
   m_ObjectHideFlags: 0
@@ -450,7 +450,7 @@ GameObject:
   - component: {fileID: 475551809}
   - component: {fileID: 475551810}
   m_Layer: 0
-  m_Name: Compas
+  m_Name: Compass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -769,7 +769,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stone: {fileID: 2362610692922354640, guid: ce21f77b63d674f45af68e9a91dab3fd, type: 3}
-  _stones: []
+  Stones: []
 --- !u!1 &790266407
 GameObject:
   m_ObjectHideFlags: 0
@@ -993,8 +993,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98da5318166dd0d48b423149857f715b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensitivity: 0.5
-  shootForce: 8
+  Sensitivity: 0.5
+  ShootForce: 10
 --- !u!1 &954562388
 GameObject:
   m_ObjectHideFlags: 0
@@ -1199,8 +1199,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f271f86e29049ad44add517f626be8f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseScroll: {x: 0, y: 0}
-  mouse: {x: 0, y: 0, z: 0}
+  MouseScroll: {x: 0, y: 0}
+  Mouse: {x: 0, y: 0, z: 0}
 --- !u!1 &1192168711
 GameObject:
   m_ObjectHideFlags: 0
@@ -1508,7 +1508,7 @@ MonoBehaviour:
   _minShootForce: 5
   _maxShootForce: 10
   _add: 0.01
-  _shootForce: 0
+  ShootForce: 0
 --- !u!23 &4606670346459224752
 MeshRenderer:
   m_ObjectHideFlags: 0

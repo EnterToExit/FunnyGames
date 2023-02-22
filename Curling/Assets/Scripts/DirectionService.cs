@@ -4,29 +4,34 @@ public class DirectionService : Service, IStart, IUpdate
 {
     [SerializeField] private Transform _forward;
     [SerializeField] private Transform _back;
-    [SerializeField] private Transform _compas;
+    [SerializeField] private Transform _compass;
     private Vector3 _mousePos;
     private Vector3 _mousePosNew;
     private GameSettings _gameSettings;
-    private float _sens;
-    public Vector3 direction;
-    public float _dick;
+    private float _sensitivity;
+    public Vector3 Direction;
+    public float Dick;
+    private MouseService _mouseService;
 
     public void GameStart()
     {
         _gameSettings = Services.Get<GameSettings>();
-        _sens = _gameSettings.sensitivity;
+        _mouseService = Services.Get<MouseService>();
+        _sensitivity = _gameSettings.Sensitivity;
     }
 
     public void GameUpdate(float delta)
     {
-        _mousePos = Input.mousePosition;
-        var mousePosDelta = _mousePosNew - _mousePos;
-        var eulerAngles = _compas.transform.eulerAngles;
-        eulerAngles += new Vector3(0f, mousePosDelta.x * -1 * _sens, 0f);
-        _compas.transform.eulerAngles = eulerAngles;
-        direction = _back.position - _forward.position;
-        _dick = eulerAngles.y;
-        _mousePosNew = Input.mousePosition;
+        SetDirection();
+    }
+
+    private void SetDirection()
+    {
+        var transform1 = _compass.transform;
+        var eulerAngles = transform1.eulerAngles;
+        eulerAngles += new Vector3(0f, _mouseService.Mouse.x * -1 * _sensitivity, 0f);
+        transform1.eulerAngles = eulerAngles;
+        Direction = _back.position - _forward.position;
+        Dick = eulerAngles.y;
     }
 }

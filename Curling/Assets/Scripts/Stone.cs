@@ -14,7 +14,7 @@ public class Stone : MonoBehaviour
         _ground = FindObjectOfType<Ground>();
         _cameraService = FindObjectOfType<CameraService>();
         var shootingService = FindObjectOfType<ShootingService>();
-        shootingService._stones.Add(gameObject);
+        shootingService.Stones.Add(gameObject);
         _rigidbody = gameObject.GetComponent<Rigidbody>();
     }
 

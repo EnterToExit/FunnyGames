@@ -8,11 +8,11 @@ public class RandomService : Service, IStart, IUpdate
     [SerializeField] private float _maxShootForce;
     [SerializeField] private float _add;
     private bool _switch;
-    public float _shootForce;
+    public float ShootForce;
 
     public void GameStart()
     {
-        _shootForce = _minShootForce;
+        ShootForce = _minShootForce;
     }
 
     public void GameUpdate(float delta)
@@ -22,9 +22,9 @@ public class RandomService : Service, IStart, IUpdate
 
     IEnumerator AddForce()
     {
-        while (_shootForce < _maxShootForce)
+        while (ShootForce < _maxShootForce)
         {
-            _shootForce += _add;
+            ShootForce += _add;
         }
 
         // while (_shootForce > _minShootForce){

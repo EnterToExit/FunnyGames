@@ -10,31 +10,28 @@ public class CameraService : Service, IStart, IUpdate
     private Vector3 _mousePos;
     private Vector3 _mousePosNew;
     private GameObject _cameraTarget;
+    private MouseService _mouseService;
 
     public void GameStart()
     {
         _gameSettings = Services.Get<GameSettings>();
+        _mouseService = Services.Get<MouseService>();
         _cameraPivot.eulerAngles = new Vector3(30f, 0f, 0f);
-        _sensitivity = _gameSettings.sensitivity;
+        _sensitivity = _gameSettings.Sensitivity;
         _cameraTarget = _stoneStartPos;
     }
 
     public void GameUpdate(float delta)
     {
-        _mousePos = Input.mousePosition; // 
-
         CameraRotation();
         CameraScroll();
         CameraPositionReset();
-
-        _mousePosNew = Input.mousePosition; // 
     }
 
     private void CameraRotation()
     {
-        var mousePosDelta = _mousePosNew - _mousePos; //
         var eulerAngles = _cameraPivot.eulerAngles;
-        eulerAngles += new Vector3(mousePosDelta.y, mousePosDelta.x * -1f) * _sensitivity;
+        eulerAngles += new Vector3(_mouseService.Mouse.y, _mouseService.Mouse.x * -1f) * _sensitivity;
         eulerAngles = new Vector3(eulerAngles.x, eulerAngles.y, 0f);
         _cameraPivot.eulerAngles = eulerAngles;
         if (_cameraPivot.eulerAngles.x > 70f)
@@ -54,10 +51,9 @@ public class CameraService : Service, IStart, IUpdate
 
     private void CameraScroll()
     {
-        var mouseScrollDelta = Input.mouseScrollDelta;
         var position = _camera.position;
         var direction = (_cameraPivot.position - position).normalized;
-        position += direction * mouseScrollDelta.y;
+        position += direction * _mouseService.MouseScroll.y;
         _camera.position = position;
     }
 

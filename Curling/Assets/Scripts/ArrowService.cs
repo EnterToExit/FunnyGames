@@ -17,7 +17,7 @@ public class ArrowService : Service, IStart, IUpdate
 
     public void GameUpdate(float delta)
     {
-        var y = _directionService._dick;
+        var y = _directionService.Dick;
         _arrow.transform.eulerAngles = new Vector3(0f, y);
         transform.position = _startPos.transform.position;
         if (!Input.GetMouseButtonDown(0)) return;
