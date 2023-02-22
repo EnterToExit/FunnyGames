@@ -5,22 +5,24 @@ using UnityEngine;
 public class ShootingService : Service, IStart, IUpdate
 {
     [SerializeField] private GameObject _stone;
-    private float _shootForce;
     private StoneStartPos _stoneStartPos;
     private DirectionController _directionController;
     private CameraController _cameraController;
     private GameSettings _gameSettings;
     private Vector3 _direction;
-    public List<GameObject> _stones;
+    private float _shootForce;
     private int _stoneNumber = -1;
+    private RandomService _randomService;
+    public List<GameObject> _stones;
 
     public void GameStart()
     {
+        _randomService = Services.Get<RandomService>();
         _stoneStartPos = FindObjectOfType<StoneStartPos>();
         _gameSettings = FindObjectOfType<GameSettings>();
-        _shootForce = _gameSettings.shootForce;
         _directionController = FindObjectOfType<DirectionController>();
         _cameraController = FindObjectOfType<CameraController>();
+        _shootForce = _gameSettings.shootForce;
     }
 
     public void GameUpdate(float delta)
