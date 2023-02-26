@@ -5,8 +5,6 @@ using System.Linq;
 
 public class ScoreService : Service, IUpdate, IStart
 {
-    private StoneBlue _stoneBlue;
-    private StoneRed _stoneRed;
     private ShootingService _shootingService;
 
     public float ScoreRed;
@@ -15,7 +13,6 @@ public class ScoreService : Service, IUpdate, IStart
     public void GameStart()
     {
         _shootingService = Services.Get<ShootingService>();
-        _stoneBlue = FindObjectOfType<StoneBlue>();
     }
 
     public void GameUpdate(float delta)
@@ -26,11 +23,7 @@ public class ScoreService : Service, IUpdate, IStart
 
     private void CollectScoreBlue()
     {
-        ScoreBlue = 0f;
-        foreach (var stone in _shootingService.StonesBlue)
-        {
-            ScoreBlue += stone.StoneScore;
-        }
+        ScoreBlue = _shootingService.StonesBlue.Sum(stone => stone.StoneScore);
     }
 
     private void CollectScoreRed()

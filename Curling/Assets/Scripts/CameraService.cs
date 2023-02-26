@@ -15,7 +15,6 @@ public class CameraService : Service, IStart, IUpdate
     {
         _gameSettings = Services.Get<GameSettings>();
         _mouseService = Services.Get<MouseService>();
-        _cameraPivot.eulerAngles = new Vector3(30f, 0f, 0f);
         _cameraTarget = _stoneStartPos;
     }
 
@@ -32,14 +31,13 @@ public class CameraService : Service, IStart, IUpdate
         eulerAngles += new Vector3(_mouseService.Mouse.y, _mouseService.Mouse.x * -1f) * _gameSettings.Sensitivity;
         eulerAngles = new Vector3(eulerAngles.x, eulerAngles.y, 0f);
         _cameraPivot.eulerAngles = eulerAngles;
-        if (_cameraPivot.eulerAngles.x > 70f)
+        if (_cameraPivot.eulerAngles.x > 80f)
         {
             var angles = _cameraPivot.eulerAngles;
-            angles = new Vector3(70f, angles.y, angles.z);
+            angles = new Vector3(80f, angles.y, angles.z);
             _cameraPivot.eulerAngles = angles;
         }
-
-        if (!(_cameraPivot.eulerAngles.x < 10f)) return;
+        if (_cameraPivot.eulerAngles.x < 10f)
         {
             var angles = _cameraPivot.eulerAngles;
             angles = new Vector3(10f, angles.y, angles.z);
@@ -57,7 +55,7 @@ public class CameraService : Service, IStart, IUpdate
 
     private void CameraPositionReset()
     {
-        _cameraPivot.position = _cameraTarget.gameObject.transform.position + Vector3.up;
+        _cameraPivot.position = _cameraTarget.gameObject.transform.position;
     }
 
     public void SetCameraTarget(GameObject target)

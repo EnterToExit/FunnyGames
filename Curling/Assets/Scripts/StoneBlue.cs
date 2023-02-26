@@ -16,15 +16,18 @@ public class StoneBlue : MonoBehaviour
         _ground = FindObjectOfType<Ground>();
         _countArea = FindObjectOfType<CountArea>();
         _cameraService = FindObjectOfType<CameraService>();
+
         var shootingService = FindObjectOfType<ShootingService>();
         shootingService.StonesBlue.Add(gameObject.GetComponent<StoneBlue>());
+
         _rigidbody = gameObject.GetComponent<Rigidbody>();
     }
 
     private void Update()
     {
-        StoneScore = 10f - (transform.position - _countArea.transform.position).magnitude;
-        
+        var distance = 5f - (transform.position - _countArea.transform.position).magnitude;
+        StoneScore = Mathf.Clamp(distance, 0f, 5f) * 2f;
+
         var speed = _rigidbody.velocity.magnitude;
         if (speed == 0f && !_dead)
         {
@@ -41,6 +44,11 @@ public class StoneBlue : MonoBehaviour
     {
         if (other.gameObject != _ground.gameObject) return;
         _cameraService.ResetCameraTarget();
+        KillStone();
+    }
+
+    private void KillStone()
+    {
         Destroy(gameObject);
     }
 }

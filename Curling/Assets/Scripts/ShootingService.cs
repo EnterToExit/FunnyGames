@@ -31,7 +31,28 @@ public class ShootingService : Service, IStart, IUpdate
 
     public void GameUpdate(float delta)
     {
+        var direction = _directionService.Direction;
+        if (Input.GetKeyDown("1"))
+        {
+            Instantiate(_blueStone, _stoneStartPos.transform).GetComponent<Rigidbody>()
+                .AddForce(direction.normalized * (_shootForce * 0.5f), ForceMode.Impulse);
+        }
+        if (Input.GetKeyDown("2"))
+        {
+            Instantiate(_blueStone, _stoneStartPos.transform).GetComponent<Rigidbody>()
+                .AddForce(direction.normalized * (_shootForce * 0.75f), ForceMode.Impulse);
+        }
+        if (Input.GetKeyDown("3"))
+        {
+            Instantiate(_blueStone, _stoneStartPos.transform).GetComponent<Rigidbody>()
+                .AddForce(direction.normalized * (_shootForce * 0.99f), ForceMode.Impulse);
+        }
         if (!Input.GetMouseButtonDown(0)) return;
+        TakeShoot();
+    }
+
+    private void TakeShoot()
+    {
         if (_redTurn)
         {
             Shoot(_redStone);
