@@ -1,25 +1,30 @@
 using System;
 using UnityEngine;
 
-public class Stone : MonoBehaviour
+public class StoneBlue : MonoBehaviour
 {
     private CameraService _cameraService;
     private Ground _ground;
     private float _passedTime;
     private bool _dead;
     private Rigidbody _rigidbody;
+    private CountArea _countArea;
+    public float StoneScore;
 
     private void Awake()
     {
         _ground = FindObjectOfType<Ground>();
+        _countArea = FindObjectOfType<CountArea>();
         _cameraService = FindObjectOfType<CameraService>();
         var shootingService = FindObjectOfType<ShootingService>();
-        shootingService.Stones.Add(gameObject);
+        shootingService.StonesBlue.Add(gameObject.GetComponent<StoneBlue>());
         _rigidbody = gameObject.GetComponent<Rigidbody>();
     }
 
     private void Update()
     {
+        StoneScore = 10f - (transform.position - _countArea.transform.position).magnitude;
+        
         var speed = _rigidbody.velocity.magnitude;
         if (speed == 0f && !_dead)
         {

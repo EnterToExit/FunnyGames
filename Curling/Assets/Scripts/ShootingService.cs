@@ -1,19 +1,23 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ShootingService : Service, IStart, IUpdate
 {
-    [SerializeField] private GameObject _stone;
+    [SerializeField] private GameObject _blueStone;
+    [SerializeField] private GameObject _redStone;
     private float _shootForce;
     private StoneStartPos _stoneStartPos;
     private DirectionService _directionService;
     private CameraService _cameraService;
     private GameSettings _gameSettings;
     private Vector3 _direction;
-    private int _stoneNumber = -1;
     private RandomService _randomService;
-    public List<GameObject> Stones;
+    private bool _redTurn;
+    
+    public List<StoneBlue> StonesBlue;
+    public List<StoneRed> StonesRed;
 
     public void GameStart()
     {
@@ -27,15 +31,26 @@ public class ShootingService : Service, IStart, IUpdate
 
     public void GameUpdate(float delta)
     {
-        if (Input.GetMouseButtonDown(0)) ShootStone();
+        if (!Input.GetMouseButtonDown(0)) return;
+        if (_redTurn)
+        {
+            Shoot(_redStone);
+            _redTurn = !_redTurn;
+            _cameraService.SetCameraTarget(StonesRed.Last().gameObject);
+        }
+        else
+        {
+            Shoot(_blueStone);
+            _redTurn = !_redTurn;
+            _cameraService.SetCameraTarget(StonesBlue.Last().gameObject);
+        }
     }
 
-    private void ShootStone()
+    private void Shoot(GameObject stone)
     {
-        _stoneNumber++;
         var direction = _directionService.Direction;
-        Instantiate(_stone, _stoneStartPos.transform).GetComponent<Rigidbody>()
+        
+        Instantiate(stone, _stoneStartPos.transform).GetComponent<Rigidbody>()
             .AddForce(direction.normalized * (_shootForce * _randomService.ForceMultiplier), ForceMode.Impulse);
-        _cameraService.SetCameraTarget(Stones[_stoneNumber]);
     }
 }

@@ -6,7 +6,6 @@ using Slider = UnityEngine.UI.Slider;
 
 public class UIController : Service, IStart, IUpdate
 {
-    // [SerializeField] private Slider _slider;
     [SerializeField] private Slider _slider;
     private RandomService _randomService;
 
