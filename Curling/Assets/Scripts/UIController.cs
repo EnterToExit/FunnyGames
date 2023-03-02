@@ -17,6 +17,9 @@ public class UIController : Service, IStart, IUpdate
     {
         _randomService = Services.Get<RandomService>();
         _scoreService = Services.Get<ScoreService>();
+        ShootingService.OnShoot += DisableSlider;
+        StoneBlue.OnStopped += EnableSlider;
+        StoneRed.OnStopped += EnableSlider;
     }
 
     public void GameUpdate(float delta)
@@ -34,5 +37,15 @@ public class UIController : Service, IStart, IUpdate
     private void UpdateSlider()
     {
         _slider.value = _randomService.ForceMultiplier;
+    }
+
+    private void EnableSlider()
+    {
+        _slider.gameObject.SetActive(true);
+    }
+    
+    private void DisableSlider()
+    {
+        _slider.gameObject.SetActive(false);
     }
 }

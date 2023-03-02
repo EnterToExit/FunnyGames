@@ -16,7 +16,8 @@ public class ShootingService : Service, IStart, IUpdate
     private RandomService _randomService;
     private bool _redTurn;
     private bool _readyToShoot;
-    
+
+    public static Action OnShoot;
     public List<StoneBlue> StonesBlue;
     public List<StoneRed> StonesRed;
 
@@ -44,6 +45,7 @@ public class ShootingService : Service, IStart, IUpdate
     {
         if (!_readyToShoot) return;
         DisableShooting();
+        OnShoot?.Invoke();
         if (_redTurn)
         {
             Shoot(_redStone);
@@ -60,7 +62,6 @@ public class ShootingService : Service, IStart, IUpdate
 
     private void EnableShooting()
     {
-        Debug.Log("Shooting enabled");
         _readyToShoot = true;
     }
     

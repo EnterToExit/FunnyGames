@@ -5,14 +5,15 @@ public class ArrowService : Service, IStart, IUpdate
     private Arrow _arrow;
     private DirectionService _directionService;
     private StoneStartPos _startPos;
-    private bool _arrowIsActive;
 
     public void GameStart()
     {
         _directionService = Services.Get<DirectionService>();
         _startPos = FindObjectOfType<StoneStartPos>();
         _arrow = FindObjectOfType<Arrow>();
-        _arrowIsActive = true;
+        ShootingService.OnShoot += DisableArrow;
+        StoneBlue.OnStopped += EnableArrow;
+        StoneRed.OnStopped += EnableArrow;
     }
 
     public void GameUpdate(float delta)
@@ -20,22 +21,15 @@ public class ArrowService : Service, IStart, IUpdate
         var y = _directionService.Dick;
         _arrow.transform.eulerAngles = new Vector3(0f, y);
         transform.position = _startPos.transform.position;
-        if (!Input.GetMouseButtonDown(0)) return;
-        // ChangeActive();
     }
 
-    private void ChangeActive()
+    private void EnableArrow()
     {
-        switch (_arrowIsActive)
-        {
-            case true:
-                _arrow.gameObject.SetActive(false);
-                _arrowIsActive = false;
-                break;
-            case false:
-                _arrow.gameObject.SetActive(true);
-                _arrowIsActive = true;
-                break;
-        }
+        _arrow.gameObject.SetActive(true);
+    }
+    
+    private void DisableArrow()
+    {
+        _arrow.gameObject.SetActive(false);
     }
 }
