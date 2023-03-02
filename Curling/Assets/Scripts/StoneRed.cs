@@ -10,6 +10,7 @@ public class StoneRed : MonoBehaviour
     private Rigidbody _rigidbody;
     private CountArea _countArea;
     public float StoneScore;
+    public static Action OnStopped;
 
     private void Awake()
     {
@@ -37,18 +38,19 @@ public class StoneRed : MonoBehaviour
         if (!(_passedTime > 1f)) return;
         _dead = true;
         _passedTime = 0f;
+        OnStopped?.Invoke();
         _cameraService.ResetCameraTarget();
     }
 
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject != _ground.gameObject) return;
-        _cameraService.ResetCameraTarget();
-        KillStone();
+        Destroy(gameObject);
     }
 
-    private void KillStone()
+    private void OnDestroy()
     {
-        Destroy(gameObject);
+        OnStopped?.Invoke();
+        _cameraService.ResetCameraTarget();
     }
 }

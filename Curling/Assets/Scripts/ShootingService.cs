@@ -15,6 +15,7 @@ public class ShootingService : Service, IStart, IUpdate
     private Vector3 _direction;
     private RandomService _randomService;
     private bool _redTurn;
+    private bool _readyToShoot;
     
     public List<StoneBlue> StonesBlue;
     public List<StoneRed> StonesRed;
@@ -27,6 +28,9 @@ public class ShootingService : Service, IStart, IUpdate
         _randomService = Services.Get<RandomService>();
         _stoneStartPos = FindObjectOfType<StoneStartPos>();
         _shootForce = _gameSettings.ShootForce;
+        StoneBlue.OnStopped += EnableShooting;
+        StoneRed.OnStopped += EnableShooting;
+        _readyToShoot = true;
     }
 
     public void GameUpdate(float delta)
@@ -34,6 +38,43 @@ public class ShootingService : Service, IStart, IUpdate
         // DebugShooting();
         if (!Input.GetMouseButtonDown(0)) return;
         TakeShoot();
+    }
+
+    private void TakeShoot()
+    {
+        if (!_readyToShoot) return;
+        DisableShooting();
+        if (_redTurn)
+        {
+            Shoot(_redStone);
+            _redTurn = !_redTurn;
+            _cameraService.SetCameraTarget(StonesRed.Last().gameObject);
+        }
+        else
+        {
+            Shoot(_blueStone);
+            _redTurn = !_redTurn;
+            _cameraService.SetCameraTarget(StonesBlue.Last().gameObject);
+        }
+    }
+
+    private void EnableShooting()
+    {
+        Debug.Log("Shooting enabled");
+        _readyToShoot = true;
+    }
+    
+    private void DisableShooting()
+    {
+        _readyToShoot = false;
+    }
+
+    private void Shoot(GameObject stone)
+    {
+        var direction = _directionService.Direction;
+        
+        Instantiate(stone, _stoneStartPos.transform).GetComponent<Rigidbody>()
+            .AddForce(direction.normalized * (_shootForce * _randomService.ForceMultiplier), ForceMode.Impulse);
     }
 
     private void DebugShooting()
@@ -56,29 +97,5 @@ public class ShootingService : Service, IStart, IUpdate
             Instantiate(_blueStone, _stoneStartPos.transform).GetComponent<Rigidbody>()
                 .AddForce(direction.normalized * (_shootForce * 0.99f), ForceMode.Impulse);
         }
-    }
-
-    private void TakeShoot()
-    {
-        if (_redTurn)
-        {
-            Shoot(_redStone);
-            _redTurn = !_redTurn;
-            _cameraService.SetCameraTarget(StonesRed.Last().gameObject);
-        }
-        else
-        {
-            Shoot(_blueStone);
-            _redTurn = !_redTurn;
-            _cameraService.SetCameraTarget(StonesBlue.Last().gameObject);
-        }
-    }
-
-    private void Shoot(GameObject stone)
-    {
-        var direction = _directionService.Direction;
-        
-        Instantiate(stone, _stoneStartPos.transform).GetComponent<Rigidbody>()
-            .AddForce(direction.normalized * (_shootForce * _randomService.ForceMultiplier), ForceMode.Impulse);
     }
 }

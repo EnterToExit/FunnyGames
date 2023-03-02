@@ -4,29 +4,28 @@ using UnityEngine;
 public class StoneBlue : MonoBehaviour
 {
     private CameraService _cameraService;
+    private ShootingService _shootingService;
     private Ground _ground;
     private float _passedTime;
     private bool _dead;
     private Rigidbody _rigidbody;
     private CountArea _countArea;
     public float StoneScore;
+    public static Action OnStopped;
 
     private void Awake()
     {
         _ground = FindObjectOfType<Ground>();
         _countArea = FindObjectOfType<CountArea>();
         _cameraService = FindObjectOfType<CameraService>();
-
-        var shootingService = FindObjectOfType<ShootingService>();
-        shootingService.StonesBlue.Add(gameObject.GetComponent<StoneBlue>());
-
+        _shootingService = FindObjectOfType<ShootingService>();
         _rigidbody = gameObject.GetComponent<Rigidbody>();
+
+        _shootingService.StonesBlue.Add(gameObject.GetComponent<StoneBlue>());
     }
 
     private void Update()
     {
-        // DebugMovement();
-
         var distance = 5f - (transform.position - _countArea.transform.position).magnitude;
         StoneScore = Mathf.Clamp(distance, 0f, 5f) * 2f;
 
@@ -39,6 +38,7 @@ public class StoneBlue : MonoBehaviour
         if (!(_passedTime > 1f)) return;
         _dead = true;
         _passedTime = 0f;
+        OnStopped?.Invoke();
         _cameraService.ResetCameraTarget();
     }
 
@@ -69,12 +69,12 @@ public class StoneBlue : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject != _ground.gameObject) return;
-        _cameraService.ResetCameraTarget();
-        KillStone();
+        Destroy(gameObject);
     }
 
-    private void KillStone()
+    private void OnDestroy()
     {
-        Destroy(gameObject);
+        OnStopped?.Invoke();
+        _cameraService.ResetCameraTarget();
     }
 }
