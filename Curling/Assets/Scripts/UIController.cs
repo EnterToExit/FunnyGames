@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Slider = UnityEngine.UI.Slider;
 
 public class UIController : Service, IStart, IUpdate
@@ -10,9 +11,14 @@ public class UIController : Service, IStart, IUpdate
     [SerializeField] private Slider _slider;
     [SerializeField] private TextMeshProUGUI _blueScore;
     [SerializeField] private TextMeshProUGUI _redScore;
+    [SerializeField] private TextMeshProUGUI _uiRoundNumber;
+    [SerializeField] private GameObject _redTeamWin;
+    [SerializeField] private GameObject _blueTeamWin;
     private RandomService _randomService;
     private ScoreService _scoreService;
-
+    private int _roundNumber = 1;
+    public static Action OnEndSession;
+    
     public void GameStart()
     {
         _randomService = Services.Get<RandomService>();
@@ -26,12 +32,46 @@ public class UIController : Service, IStart, IUpdate
     {
         UpdateSlider();
         UpdateScore();
+        UpdateRound();
+        if (_roundNumber == 6) EndSession();
+    }
+
+    public void AddRound()
+    {
+        _roundNumber++;
+    }
+
+    private void EndSession()
+    {
+        OnEndSession?.Invoke();
+        DisableSlider();
+        _blueScore.gameObject.SetActive(false);
+        _redScore.gameObject.SetActive(false);
+        _uiRoundNumber.gameObject.SetActive(false);
+        if (_scoreService.ScoreRed > _scoreService.ScoreBlue)
+        {
+            _redTeamWin.gameObject.SetActive(true);
+        }
+        else
+        {
+            _blueTeamWin.gameObject.SetActive(true);
+        }
+    }
+
+    private void RestartSession()
+    {
+        SceneManager.LoadScene("SampleScene");
     }
 
     private void UpdateScore()
     {
         _blueScore.text = _scoreService.ScoreBlue.ToString("0.00");
         _redScore.text = _scoreService.ScoreRed.ToString("0.00");
+    }
+
+    private void UpdateRound()
+    {
+        _uiRoundNumber.text = _roundNumber.ToString("0");
     }
 
     private void UpdateSlider()

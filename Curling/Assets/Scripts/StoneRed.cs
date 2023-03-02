@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class StoneRed : MonoBehaviour
@@ -45,7 +46,7 @@ public class StoneRed : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject != _ground.gameObject) return;
-        Destroy(gameObject);
+        Destroy(gameObject, 1f);
     }
 
     private void OnDestroy()

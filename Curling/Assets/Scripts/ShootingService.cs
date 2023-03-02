@@ -14,12 +14,18 @@ public class ShootingService : Service, IStart, IUpdate
     private GameSettings _gameSettings;
     private Vector3 _direction;
     private RandomService _randomService;
+    private UIController _uiController;
     private bool _redTurn;
     private bool _readyToShoot;
-
+    private bool _sessionEnded;
     public static Action OnShoot;
     public List<StoneBlue> StonesBlue;
     public List<StoneRed> StonesRed;
+
+    enum MyEnum
+    {
+        Blue = 0, Red = 1
+    }
 
     public void GameStart()
     {
@@ -27,22 +33,25 @@ public class ShootingService : Service, IStart, IUpdate
         _directionService = Services.Get<DirectionService>();
         _cameraService = Services.Get<CameraService>();
         _randomService = Services.Get<RandomService>();
+        _uiController = Services.Get<UIController>();
         _stoneStartPos = FindObjectOfType<StoneStartPos>();
         _shootForce = _gameSettings.ShootForce;
         StoneBlue.OnStopped += EnableShooting;
         StoneRed.OnStopped += EnableShooting;
+        StoneRed.OnStopped += EndRound;
+        UIController.OnEndSession += EndSession;
         _readyToShoot = true;
     }
 
     public void GameUpdate(float delta)
     {
-        // DebugShooting();
         if (!Input.GetMouseButtonDown(0)) return;
         TakeShoot();
     }
 
     private void TakeShoot()
     {
+        if (_sessionEnded) return;
         if (!_readyToShoot) return;
         DisableShooting();
         OnShoot?.Invoke();
@@ -60,11 +69,21 @@ public class ShootingService : Service, IStart, IUpdate
         }
     }
 
+    private void EndRound()
+    {
+        _uiController.AddRound();
+    }
+
+    private void EndSession()
+    {
+        _sessionEnded = true;
+    }
+
     private void EnableShooting()
     {
         _readyToShoot = true;
     }
-    
+
     private void DisableShooting()
     {
         _readyToShoot = false;
@@ -73,7 +92,7 @@ public class ShootingService : Service, IStart, IUpdate
     private void Shoot(GameObject stone)
     {
         var direction = _directionService.Direction;
-        
+
         Instantiate(stone, _stoneStartPos.transform).GetComponent<Rigidbody>()
             .AddForce(direction.normalized * (_shootForce * _randomService.ForceMultiplier), ForceMode.Impulse);
     }

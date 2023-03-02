@@ -1,8 +1,13 @@
 using System;
 using UnityEngine;
 
+enum Team
+{
+    Red, Blue
+}
 public class StoneBlue : MonoBehaviour
 {
+    [SerializeField] private Team _team;
     private CameraService _cameraService;
     private ShootingService _shootingService;
     private Ground _ground;
@@ -69,7 +74,7 @@ public class StoneBlue : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject != _ground.gameObject) return;
-        Destroy(gameObject);
+        Destroy(gameObject, 1f);
     }
 
     private void OnDestroy()
