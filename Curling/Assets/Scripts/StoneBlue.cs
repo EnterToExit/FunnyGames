@@ -25,6 +25,8 @@ public class StoneBlue : MonoBehaviour
 
     private void Update()
     {
+        // DebugMovement();
+
         var distance = 5f - (transform.position - _countArea.transform.position).magnitude;
         StoneScore = Mathf.Clamp(distance, 0f, 5f) * 2f;
 
@@ -38,6 +40,30 @@ public class StoneBlue : MonoBehaviour
         _dead = true;
         _passedTime = 0f;
         _cameraService.ResetCameraTarget();
+    }
+
+    private void DebugMovement()
+    {
+        var hueta = 0.001f;
+        if (Input.GetKey("w"))
+        {
+            transform.position += Vector3.forward * hueta;
+        }
+
+        if (Input.GetKey("a"))
+        {
+            transform.position += Vector3.left * hueta;
+        }
+
+        if (Input.GetKey("d"))
+        {
+            transform.position += Vector3.right * hueta;
+        }
+
+        if (Input.GetKey("s"))
+        {
+            transform.position += Vector3.back * hueta;
+        }
     }
 
     private void OnCollisionEnter(Collision other)
