@@ -86,9 +86,15 @@ public class UIController : Service, IStart, IUpdate
     {
         _slider.gameObject.SetActive(true);
     }
-    
+
     private void DisableSlider()
     {
         _slider.gameObject.SetActive(false);
+    }
+
+    private void OnDestroy()
+    {
+        ShootingService.OnShoot -= DisableSlider;
+        Stone.OnStopped -= EnableSlider;
     }
 }
