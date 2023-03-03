@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class ArrowService : Service, IStart, IUpdate
@@ -30,5 +31,11 @@ public class ArrowService : Service, IStart, IUpdate
     private void DisableArrow()
     {
         _arrow.gameObject.SetActive(false);
+    }
+
+    private void OnDestroy()
+    {
+        ShootingService.OnShoot -= DisableArrow;
+        Stone.OnStopped -= EnableArrow;
     }
 }
