@@ -12,8 +12,7 @@ public class ArrowService : Service, IStart, IUpdate
         _startPos = FindObjectOfType<StoneStartPos>();
         _arrow = FindObjectOfType<Arrow>();
         ShootingService.OnShoot += DisableArrow;
-        StoneBlue.OnStopped += EnableArrow;
-        StoneRed.OnStopped += EnableArrow;
+        Stone.OnStopped += EnableArrow;
     }
 
     public void GameUpdate(float delta)

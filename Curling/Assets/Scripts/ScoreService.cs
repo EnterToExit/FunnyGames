@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
 
 public class ScoreService : Service, IUpdate, IStart
@@ -17,17 +14,12 @@ public class ScoreService : Service, IUpdate, IStart
 
     public void GameUpdate(float delta)
     {
-        CollectScoreBlue();
-        CollectScoreRed();
+        CollectScore();
     }
 
-    private void CollectScoreBlue()
-    {
-        ScoreBlue = _shootingService.StonesBlue.Sum(stone => stone.StoneScore);
-    }
-
-    private void CollectScoreRed()
+    private void CollectScore()
     {
         ScoreRed = _shootingService.StonesRed.Sum(stone => stone.StoneScore);
+        ScoreBlue = _shootingService.StonesBlue.Sum(stone => stone.StoneScore);
     }
 }

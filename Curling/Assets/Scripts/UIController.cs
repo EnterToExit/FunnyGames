@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -24,8 +22,7 @@ public class UIController : Service, IStart, IUpdate
         _randomService = Services.Get<RandomService>();
         _scoreService = Services.Get<ScoreService>();
         ShootingService.OnShoot += DisableSlider;
-        StoneBlue.OnStopped += EnableSlider;
-        StoneRed.OnStopped += EnableSlider;
+        Stone.OnStopped += EnableSlider;
     }
 
     public void GameUpdate(float delta)

@@ -19,13 +19,8 @@ public class ShootingService : Service, IStart, IUpdate
     private bool _readyToShoot;
     private bool _sessionEnded;
     public static Action OnShoot;
-    public List<StoneBlue> StonesBlue;
-    public List<StoneRed> StonesRed;
-
-    enum MyEnum
-    {
-        Blue = 0, Red = 1
-    }
+    public List<Stone> StonesRed;
+    public List<Stone> StonesBlue;
 
     public void GameStart()
     {
@@ -36,9 +31,8 @@ public class ShootingService : Service, IStart, IUpdate
         _uiController = Services.Get<UIController>();
         _stoneStartPos = FindObjectOfType<StoneStartPos>();
         _shootForce = _gameSettings.ShootForce;
-        StoneBlue.OnStopped += EnableShooting;
-        StoneRed.OnStopped += EnableShooting;
-        StoneRed.OnStopped += EndRound;
+        Stone.OnStopped += EnableShooting;
+        Stone.OnStopped += EndRound;
         UIController.OnEndSession += EndSession;
         _readyToShoot = true;
     }
