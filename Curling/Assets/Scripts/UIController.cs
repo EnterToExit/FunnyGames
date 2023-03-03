@@ -61,7 +61,7 @@ public class UIController : Service, IStart, IUpdate
         }
     }
 
-    private void RestartSession()
+    public void RestartSession()
     {
         SceneManager.LoadScene("SampleScene");
     }

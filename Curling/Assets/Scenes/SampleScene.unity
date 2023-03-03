@@ -1895,8 +1895,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _blueStone: {fileID: 2362610692922354640, guid: ce21f77b63d674f45af68e9a91dab3fd, type: 3}
   _redStone: {fileID: 2362610692922354640, guid: f9d5848e329401d44a72965d99cad7aa, type: 3}
-  StonesBlue: []
   StonesRed: []
+  StonesBlue: []
 --- !u!1 &728957577
 GameObject:
   m_ObjectHideFlags: 0
@@ -2548,7 +2548,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 911551799}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 19977913}
+        m_TargetAssemblyTypeName: UIController, Assembly-CSharp
+        m_MethodName: RestartSession
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &911551799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3844,7 +3856,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1435916076}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 19977913}
+        m_TargetAssemblyTypeName: UIController, Assembly-CSharp
+        m_MethodName: RestartSession
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1435916076
 MonoBehaviour:
   m_ObjectHideFlags: 0
