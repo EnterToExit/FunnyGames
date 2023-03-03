@@ -32,7 +32,7 @@ public class ShootingService : Service, IStart, IUpdate
         _stoneStartPos = FindObjectOfType<StoneStartPos>();
         _shootForce = _gameSettings.ShootForce;
         Stone.OnStopped += EnableShooting;
-        Stone.OnStopped += EndRound;
+        Stone.OnStopped += EndTurn;
         UIController.OnEndSession += EndSession;
         _readyToShoot = true;
     }
@@ -63,9 +63,9 @@ public class ShootingService : Service, IStart, IUpdate
         }
     }
 
-    private void EndRound()
+    private void EndTurn()
     {
-        _uiController.AddRound();
+        _uiController.AddTurn();
     }
 
     private void EndSession()

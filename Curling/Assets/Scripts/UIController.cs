@@ -14,6 +14,7 @@ public class UIController : Service, IStart, IUpdate
     [SerializeField] private GameObject _blueTeamWin;
     private RandomService _randomService;
     private ScoreService _scoreService;
+    private int _turnCount;
     private int _roundNumber = 1;
     public static Action OnEndSession;
     
@@ -30,12 +31,17 @@ public class UIController : Service, IStart, IUpdate
         UpdateSlider();
         UpdateScore();
         UpdateRound();
+        if (_turnCount == 2)
+        {
+            _roundNumber++;
+            _turnCount = 0;
+        }
         if (_roundNumber == 6) EndSession();
     }
 
-    public void AddRound()
+    public void AddTurn()
     {
-        _roundNumber++;
+        _turnCount++;
     }
 
     private void EndSession()
