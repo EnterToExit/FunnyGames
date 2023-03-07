@@ -1,9 +1,10 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Slider = UnityEngine.UI.Slider;
 
 public class UIController : Service, IStart, IUpdate
 {
@@ -15,21 +16,22 @@ public class UIController : Service, IStart, IUpdate
     [SerializeField] private GameObject _blueTeamWin;
     [SerializeField] private GameObject _stonesBlue;
     [SerializeField] private GameObject _stonesRed;
-    private Image[] StonesBlue;
-    private Image[] StonesRed;
+    private Image[] _stonesBlueImages;
+    private Image[] _stonesRedImages;
     private RandomService _randomService;
     private ScoreService _scoreService;
 
-    private int _blueStonesCount = 4;
-    private int _redStonesCount = 4;
+    private readonly Dictionary<Team, int> _stoneCounts =
+        Enum.GetValues(typeof(Team)).Cast<Team>().ToDictionary(team => team, _ => 4);
+
     private int _turnCount;
     private int _roundNumber = 1;
     public static Action OnEndSession;
-    
+
     public void GameStart()
     {
-        StonesBlue = _stonesBlue.GetComponentsInChildren<Image>();
-        StonesRed = _stonesRed.GetComponentsInChildren<Image>();
+        _stonesBlueImages = _stonesBlue.GetComponentsInChildren<Image>();
+        _stonesRedImages = _stonesRed.GetComponentsInChildren<Image>();
         _randomService = Services.Get<RandomService>();
         _scoreService = Services.Get<ScoreService>();
         ShootingService.OnShoot += DisableSlider;
@@ -38,14 +40,10 @@ public class UIController : Service, IStart, IUpdate
 
     public void GameUpdate(float delta)
     {
-        UpdateSlider();
-        UpdateScore();
+        UpdateSliderValue();
+        UpdateScoreText();
         UpdateRound();
-        if (_turnCount == 2)
-        {
-            _roundNumber++;
-            _turnCount = 0;
-        }
+
         if (_roundNumber == 6) EndSession();
     }
 
@@ -54,16 +52,19 @@ public class UIController : Service, IStart, IUpdate
         _turnCount++;
     }
 
-    public void RemoveBlueStone()
+    public void RemoveStone(Team teamToRemove)
     {
-        StonesBlue[_blueStonesCount].gameObject.SetActive(false);
-        _blueStonesCount--;
-    }
-    
-    public void RemoveRedStone()
-    {
-        StonesRed[_redStonesCount].gameObject.SetActive(false);
-        _redStonesCount--;
+        (teamToRemove switch
+            {
+                Team.Blue => _stonesBlueImages,
+                Team.Red => _stonesRedImages,
+                _ => throw new ArgumentOutOfRangeException(nameof(teamToRemove), teamToRemove, null)
+            })
+            [_stoneCounts[teamToRemove]]
+            .gameObject
+            .SetActive(false);
+
+        _stoneCounts[teamToRemove]--;
     }
 
     private void EndSession()
@@ -88,7 +89,7 @@ public class UIController : Service, IStart, IUpdate
         SceneManager.LoadScene("SampleScene");
     }
 
-    private void UpdateScore()
+    private void UpdateScoreText()
     {
         _blueScore.text = _scoreService.ScoreBlue.ToString("0.00");
         _redScore.text = _scoreService.ScoreRed.ToString("0.00");
@@ -97,9 +98,12 @@ public class UIController : Service, IStart, IUpdate
     private void UpdateRound()
     {
         _uiRoundNumber.text = _roundNumber.ToString("0");
+        if (_turnCount != 2) return;
+        _roundNumber++;
+        _turnCount = 0;
     }
 
-    private void UpdateSlider()
+    private void UpdateSliderValue()
     {
         _slider.value = _randomService.ForceMultiplier;
     }

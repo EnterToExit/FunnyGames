@@ -7,9 +7,35 @@ public enum Team
     Blue
 }
 
+public static class Extensions
+{
+    public static Color TeamColor(this Team team)
+    {
+        return team switch
+        {
+            Team.Blue => Color.blue,
+            Team.Red => Color.red,
+            _ => Color.white
+        };
+    }
+
+    public static Team ResolveNextTeam(this Team team)
+    {
+        return team switch
+        {
+            Team.Blue => Team.Red,
+            Team.Red => Team.Blue,
+            _ => team
+        };
+    }
+}
+
 public class Stone : MonoBehaviour
 {
-    [SerializeField] private Team _team;
+    public Team Team { get; private set; }
+    public float StoneScore;
+    public static Action OnStopped;
+    [SerializeField] private Material _stoneMaterial; 
     private CameraService _cameraService;
     private ShootingService _shootingService;
     private Ground _ground;
@@ -18,9 +44,6 @@ public class Stone : MonoBehaviour
     private Rigidbody _rigidbody;
     private CountArea _countArea;
     private UIController _uiController;
-    public float StoneScore;
-    public static Action OnStopped;
-    public Cum Cum;
 
     private void Awake()
     {
@@ -30,18 +53,9 @@ public class Stone : MonoBehaviour
         _cameraService = FindObjectOfType<CameraService>();
         _shootingService = FindObjectOfType<ShootingService>();
         _rigidbody = gameObject.GetComponent<Rigidbody>();
+        Team = _shootingService.CurrentTeam;
 
-        switch (_team)
-        {
-            case Team.Blue:
-                _shootingService.StonesBlue.Add(gameObject.GetComponent<Stone>());
-                break;
-            case Team.Red:
-                _shootingService.StonesRed.Add(gameObject.GetComponent<Stone>());
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
+        _shootingService.Stones.Add(gameObject.GetComponent<Stone>());
     }
 
     private void Update()
@@ -78,16 +92,6 @@ public class Stone : MonoBehaviour
 
     private void RemoveStoneFromUI()
     {
-        switch (_team)
-        {
-            case Team.Blue:
-                _uiController.RemoveBlueStone();
-                break;
-            case Team.Red:
-                _uiController.RemoveRedStone();
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
+        _uiController.RemoveStone(Team);
     }
 }

@@ -1,4 +1,4 @@
-using System.Linq;
+using System;
 
 public class ScoreService : Service, IUpdate, IStart
 {
@@ -19,7 +19,6 @@ public class ScoreService : Service, IUpdate, IStart
 
     private void CollectScore()
     {
-        ScoreRed = _shootingService.StonesRed.Sum(stone => stone.StoneScore);
-        ScoreBlue = _shootingService.StonesBlue.Sum(stone => stone.StoneScore);
+        (ScoreRed, ScoreBlue) = _shootingService.CountTeamScores();
     }
 }

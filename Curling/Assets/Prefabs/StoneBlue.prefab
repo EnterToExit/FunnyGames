@@ -128,5 +128,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd0f27f46240c384884c921c766d55d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _team: 1
   StoneScore: 0
+  _stoneMaterial: {fileID: 2100000, guid: 41ef2b9541afd324bac9c31c2bfaf288, type: 2}
