@@ -52,14 +52,12 @@ public class ShootingService : Service, IStart, IUpdate
         if (_redTurn)
         {
             Shoot(_redStone);
-            _uiController.RemoveRedStone();
             _redTurn = !_redTurn;
             _cameraService.SetCameraTarget(StonesRed.Last().gameObject);
         }
         else
         {
             Shoot(_blueStone);
-            _uiController.RemoveBlueStone();
             _redTurn = !_redTurn;
             _cameraService.SetCameraTarget(StonesBlue.Last().gameObject);
         }

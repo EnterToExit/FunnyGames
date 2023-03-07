@@ -17,11 +17,11 @@ public class UIController : Service, IStart, IUpdate
     [SerializeField] private GameObject _stonesRed;
     private Image[] StonesBlue;
     private Image[] StonesRed;
-    private int _blueStonesCount = 4;
-    private int _redStonesCount = 4;
-    
     private RandomService _randomService;
     private ScoreService _scoreService;
+
+    private int _blueStonesCount = 4;
+    private int _redStonesCount = 4;
     private int _turnCount;
     private int _roundNumber = 1;
     public static Action OnEndSession;
@@ -57,7 +57,6 @@ public class UIController : Service, IStart, IUpdate
     public void RemoveBlueStone()
     {
         StonesBlue[_blueStonesCount].gameObject.SetActive(false);
-        // StonesBlue[_blueStonesCount].transform.position = Vector3.left * 50f;
         _blueStonesCount--;
     }
     

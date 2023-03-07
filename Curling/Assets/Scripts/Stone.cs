@@ -17,11 +17,14 @@ public class Stone : MonoBehaviour
     private bool _dead;
     private Rigidbody _rigidbody;
     private CountArea _countArea;
+    private UIController _uiController;
     public float StoneScore;
     public static Action OnStopped;
+    public Cum Cum;
 
     private void Awake()
-    { 
+    {
+        _uiController = FindObjectOfType<UIController>();
         _ground = FindObjectOfType<Ground>();
         _countArea = FindObjectOfType<CountArea>();
         _cameraService = FindObjectOfType<CameraService>();
@@ -56,31 +59,8 @@ public class Stone : MonoBehaviour
         _dead = true;
         _passedTime = 0f;
         OnStopped?.Invoke();
+        RemoveStoneFromUI();
         _cameraService.ResetCameraTarget();
-    }
-
-    private void DebugMovement()
-    {
-        var hueta = 0.001f;
-        if (Input.GetKey("w"))
-        {
-            transform.position += Vector3.forward * hueta;
-        }
-
-        if (Input.GetKey("a"))
-        {
-            transform.position += Vector3.left * hueta;
-        }
-
-        if (Input.GetKey("d"))
-        {
-            transform.position += Vector3.right * hueta;
-        }
-
-        if (Input.GetKey("s"))
-        {
-            transform.position += Vector3.back * hueta;
-        }
     }
 
     private void OnCollisionEnter(Collision other)
@@ -92,6 +72,22 @@ public class Stone : MonoBehaviour
     private void OnDestroy()
     {
         OnStopped?.Invoke();
+        RemoveStoneFromUI();
         _cameraService.ResetCameraTarget();
+    }
+
+    private void RemoveStoneFromUI()
+    {
+        switch (_team)
+        {
+            case Team.Blue:
+                _uiController.RemoveBlueStone();
+                break;
+            case Team.Red:
+                _uiController.RemoveRedStone();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
 }
