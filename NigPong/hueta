@@ -1,0 +1,11 @@
+data_Pclass = data[['Sex', 'Pclass']]
+full = data_Pclass.Pclass.value_counts().sort_values()
+full.plot(kind = 'bar')
+data_Pclass_female = data_Pclass[data_Pclass['Sex'] == 'female']
+female = data_Pclass_female.Pclass.value_counts().sort_values()
+female.plot(kind = 'bar')
+female
+data_Pclass_male = data_Pclass[data_Pclass['Sex'] == 'male']
+male = data_Pclass_male.Pclass.value_counts().sort_values()
+male.plot(kind = 'bar')
+male

@@ -9,13 +9,14 @@ public class BallController : MonoBehaviour
     [SerializeField] private Transform _ballPos;
     [SerializeField] private float _ballSpeed;
     private Vector3 _ballDirection;
+    private Vector3 _hitNormal;
 
     private void Start()
     {
-        // var randomX = new System.Random().Next(-10, 10);
-        // var randomY = new System.Random().Next(-10, 10);
-        // _ballDirection = new Vector3(randomX, randomY, 0).normalized;
-        _ballDirection = new Vector3(5f, 0f, 0f).normalized;
+        var randomX = new System.Random().Next(-10, 10);
+        var randomY = new System.Random().Next(-10, 10);
+        _ballDirection = new Vector3(randomX, randomY, 0).normalized;
+        // _ballDirection = new Vector3(5f, 0f, 0f).normalized;
     }
 
     private void FixedUpdate()
@@ -33,13 +34,20 @@ public class BallController : MonoBehaviour
 
     private bool IsTouching()
     {
+        RaycastHit hitInfo;
         Collider[] hitColliders = Physics.OverlapSphere(_ballPos.position, 1f);
-        if (hitColliders.Count() > 1) return true;
+        
+        if (hitColliders.Count() > 1) 
+        {
+            Physics.SphereCast(_ballPos.position, 1f, Vector3.right, out hitInfo);
+            _hitNormal = hitInfo.normal;
+            return true;
+        }
         else return false;
     }
 
     private void ChangeDireciton() 
     {
-        _ballDirection = _ballDirection * -1f;
+        _ballDirection = Vector3.Reflect(_ballDirection, _hitNormal);
     }
 }

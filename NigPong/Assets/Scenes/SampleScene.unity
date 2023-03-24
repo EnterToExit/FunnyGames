@@ -234,7 +234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ballPos: {fileID: 294506868}
-  _ballSpeed: 0.01
+  _ballSpeed: 0.05
 --- !u!1 &435392553
 GameObject:
   m_ObjectHideFlags: 0
