@@ -7,6 +7,7 @@ using UnityEngine;
 public class BallController : MonoBehaviour
 {
     [SerializeField] private Transform _ballPos;
+    [SerializeField] private Rigidbody _ball;
     [SerializeField] private float _ballSpeed;
     private Vector3 _ballDirection;
     private Vector3 _hitNormal;
@@ -16,38 +17,18 @@ public class BallController : MonoBehaviour
         var randomX = new System.Random().Next(-10, 10);
         var randomY = new System.Random().Next(-10, 10);
         _ballDirection = new Vector3(randomX, randomY, 0).normalized;
-        // _ballDirection = new Vector3(5f, 0f, 0f).normalized;
+        _ball.AddForce(_ballDirection * _ballSpeed, ForceMode.Impulse);
+        // _ball.AddRelativeForce(_ballDirection * _ballSpeed); 
     }
 
-    private void FixedUpdate()
+    private void ChangeDireciton(ContactPoint hit) 
     {
-        MoveBall();
-        if (IsTouching()) ChangeDireciton();
+        _ballDirection = Vector3.Reflect(_ballDirection, hit.normal);
     }
 
-    private void MoveBall()
-    {
-        var currentBallPos = _ballPos.position;
-        var newBallPos = currentBallPos + _ballDirection * _ballSpeed;
-        _ballPos.position = newBallPos;
-    }
-
-    private bool IsTouching()
-    {
-        RaycastHit hitInfo;
-        Collider[] hitColliders = Physics.OverlapSphere(_ballPos.position, 1f);
-        
-        if (hitColliders.Count() > 1) 
-        {
-            Physics.SphereCast(_ballPos.position, 1f, Vector3.right, out hitInfo);
-            _hitNormal = hitInfo.normal;
-            return true;
-        }
-        else return false;
-    }
-
-    private void ChangeDireciton() 
-    {
-        _ballDirection = Vector3.Reflect(_ballDirection, _hitNormal);
+    private void OnCollisionEnter(Collision other) {
+        var contactPoint = other.contacts[0];
+        ChangeDireciton(contactPoint);
+        _ball.AddForce(_ballDirection * _ballSpeed, ForceMode.Impulse);
     }
 }
