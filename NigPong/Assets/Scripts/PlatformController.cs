@@ -23,6 +23,6 @@ public class PlatformController : MonoBehaviour
     }
 
     private void InstantiateBall() {
-        var ball = Instantiate(_ball, _spawnPoint) as GameObject;
+        Instantiate(_ball, _spawnPoint);
     }
 }
