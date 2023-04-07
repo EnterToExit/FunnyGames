@@ -17,12 +17,5 @@ public class PlatformController : MonoBehaviour
         if (Input.GetKey("right")){
             _platform.position += (Vector3.right * _speed) * Time.deltaTime;
         }
-        if (Input.GetKeyDown("up")){
-            InstantiateBall();
-        }
-    }
-
-    private void InstantiateBall() {
-        Instantiate(_ball, _spawnPoint);
     }
 }

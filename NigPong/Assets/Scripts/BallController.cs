@@ -18,7 +18,6 @@ public class BallController : MonoBehaviour
         var randomY = new System.Random().Next(-10, 10);
         _ballDirection = new Vector3(randomX, randomY, 0).normalized;
         _ball.AddForce(_ballDirection * _ballSpeed, ForceMode.Impulse);
-        // _ball.AddRelativeForce(_ballDirection * _ballSpeed); 
     }
 
     private void ChangeDireciton(ContactPoint hit) 
